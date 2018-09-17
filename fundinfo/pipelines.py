@@ -10,7 +10,7 @@ from fundinfo.items import YangLeeItem
 class YangLeePipeline(object):
 
     def process_item(self, item, spider):
-        if isinstance(item,YangLeeItem):
+        if isinstance(item, YangLeeItem):
             item_dict = item['basic']
             item_dict.update(item['additional'])
             item_dict['url'] = item['url']

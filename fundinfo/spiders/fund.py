@@ -20,11 +20,10 @@ class FundSpider(scrapy.Spider):
     start_urls = ['http://gs.amac.org.cn/amac-infodisc/res/pof/fund/index.html']
     # start_urls = ['http://gs.amac.org.cn/']
 
-    meta = {"use_js":999}
+    meta = {"use_js": 999}
 
     handle_httpstatus_list = [304]
     driver = driver
-
 
     def parse(self, response):
         self.driver.implicitly_wait(10)
@@ -33,9 +32,9 @@ class FundSpider(scrapy.Spider):
         url = response.xpath("/html/body/div/div[2]/div[2]/div[1]/div[2]/div/ul/li[1]/a/@href").extract_first()
         next_page = response.urljoin(url)
 
-        yield scrapy.Request(next_page,meta=self.meta, callback=self.parse_fund)
+        yield scrapy.Request(next_page, meta=self.meta, callback=self.parse_fund)
 
-    def parse_fund(self,response):
+    def parse_fund(self, response):
         time.sleep(5)
         element = self.driver.find_element_by_xpath('/html/body/div[6]/div[3]/div/button/span')
         element.click()
@@ -54,7 +53,5 @@ class FundSpider(scrapy.Spider):
 
             self.driver.find_elements_by_xpath('//*[@id="fundlist_paginate"]/a[2]').click()
 
-
-
-    def parse_page(self,response):
+    def parse_page(self, response):
         print(response.body)

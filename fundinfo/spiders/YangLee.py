@@ -24,7 +24,7 @@ class YangLee(scrapy.Spider):
         for url in self.start_urls:
             yield scrapy.Request(url, meta={'use_js': '123'}, callback=self.parse)
 
-    def process_page(self,response):
+    def process_page(self, response):
         # 点击在售
         element = WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="procon1"]/li[1]/div/span[2]/div/label/span[2]')))
@@ -50,11 +50,10 @@ class YangLee(scrapy.Spider):
             self.driver.execute_script("arguments[0].click();", element)
             count += 1
 
-
     def parse(self, response):
 
         # 爬取信托产品数据
-        for item in  self.process_page(response):
+        for item in self.process_page(response):
             yield item
 
         job_list = {
@@ -63,7 +62,7 @@ class YangLee(scrapy.Spider):
             # '其它产品': '//*[@id="pro_type"]/span[4]/div/label/e'
         }
 
-        #依次爬取其他类别数据
+        # 依次爬取其他类别数据
         for key, val in job_list.items():
             print("爬取{}页面数据".format(key))
             self.driver.find_element_by_xpath(val).click()
